@@ -1,0 +1,15 @@
+# IDE files
+*.iml
+.idea/
+.vscode/
+
+# Unused files
+output/
+.github/
+.git/
+docs/
+testing/
+cmd/
+pkg/
+hack/
+.DS_Store
