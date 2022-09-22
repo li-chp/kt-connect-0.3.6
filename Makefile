@@ -1,5 +1,5 @@
 PREFIX			  ?= registry.cn-hangzhou.aliyuncs.com/rdc-incubator
-TAG				  ?= dev
+TAG				  ?= v0.3.6
 SHADOW_IMAGE	  =  kt-connect-shadow
 SHADOW_BASE_IMAGE =  shadow-base
 ROUTER_IMAGE	  =  kt-connect-router

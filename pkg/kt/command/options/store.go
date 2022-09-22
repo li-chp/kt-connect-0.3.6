@@ -1,6 +1,7 @@
 package options
 
 import (
+	versionedclient "istio.io/client-go/pkg/clientset/versioned"
 	"k8s.io/client-go/kubernetes"
 	"k8s.io/client-go/rest"
 )
@@ -11,9 +12,11 @@ var Store = &RuntimeStore{}
 type RuntimeStore struct {
 	// Clientset for kubernetes operation
 	Clientset kubernetes.Interface
+	// IstioClient for kubernetes operation
+	IstioClient versionedclient.Interface
 	// RestConfig kubectl config
 	RestConfig *rest.Config
-	// Version ktctl version
+	// Version et version
 	Version string
 	// Component current sub-command (connect, exchange, mesh or preview)
 	Component string
@@ -23,10 +26,16 @@ type RuntimeStore struct {
 	Router string
 	// Mesh version of mesh pod
 	Mesh string
+	// Mesh version of mesh pod
+	MeshDebug string
 	// Origin the origin deployment or service name
 	Origin string
 	// Replicas the origin replicas
 	Replicas int32
 	// Service exposed service name
 	Service string
+	// VS
+	VirtualServicePatch bool
+	// DR
+	DestinationRulePatch bool
 }

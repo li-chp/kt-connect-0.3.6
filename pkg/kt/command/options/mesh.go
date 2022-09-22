@@ -14,9 +14,10 @@ func MeshFlags() []OptionConfig {
 			Required:     true,
 		},
 		{
-			Target:       "Mode",
+			Target:       "MeshMode",
 			DefaultValue: util.MeshModeAuto,
 			Description:  "Mesh method 'auto' or 'manual'",
+			Hidden:       true,
 		},
 		{
 			Target:       "VersionMark",

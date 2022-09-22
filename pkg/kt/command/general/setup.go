@@ -7,6 +7,7 @@ import (
 	"github.com/alibaba/kt-connect/pkg/kt/util"
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
+	versionedclient "istio.io/client-go/pkg/clientset/versioned"
 	k8sRuntime "k8s.io/apimachinery/pkg/util/runtime"
 	"k8s.io/client-go/kubernetes"
 	"k8s.io/client-go/tools/clientcmd"
@@ -27,7 +28,7 @@ func Prepare() error {
 		return err
 	}
 
-	log.Info().Msgf("KtConnect %s start at %d (%s %s)",
+	log.Info().Msgf("Environment Toolkit %s start at %d (%s %s)",
 		opt.Store.Version, os.Getpid(), runtime.GOOS, runtime.GOARCH)
 
 	if !opt.Get().Global.UseLocalTime {
@@ -114,8 +115,13 @@ func combineKubeOpts() (err error) {
 	if err != nil {
 		return err
 	}
+	istioClient, err := versionedclient.NewForConfig(restConfig)
+	if err != nil {
+		return err
+	}
 	opt.Store.Clientset = clientSet
 	opt.Store.RestConfig = restConfig
+	opt.Store.IstioClient = istioClient
 
 	clusterName := "none"
 	for name, context := range config.Contexts {

@@ -1,10 +1,11 @@
 package options
 
 import (
+	"fmt"
 	"github.com/alibaba/kt-connect/pkg/kt/util"
 )
 
-func ConnectFlags() []OptionConfig {
+func MeshDebugFlags() []OptionConfig {
 	flags := []OptionConfig{
 		{
 			Target:       "ConnectMode",
@@ -47,11 +48,6 @@ func ConnectFlags() []OptionConfig {
 			Description:  "Do not route specified IPs to cluster, e.g. '192.168.64.2' or '192.168.64.0/24', use ',' separated",
 		},
 		{
-			Target:       "IngressIp",
-			DefaultValue: "",
-			Description:  "Specify an IP address which all ingress domains should be resolve to",
-		},
-		{
 			Target:       "DisableTunDevice",
 			DefaultValue: false,
 			Description:  "(tun2socks mode only) Create socks5 proxy without tun device",
@@ -71,19 +67,51 @@ func ConnectFlags() []OptionConfig {
 			DefaultValue: 60,
 			Description:  "(local dns mode only) DNS cache refresh interval in seconds",
 		},
+
+		{
+			Target:       "Expose",
+			DefaultValue: "",
+			Description:  "Ports to expose, use ',' separated, in [port] or [local:remote] format, e.g. 7001,8080:80",
+			Required:     true,
+		},
+		{
+			Target:       "MeshMode",
+			DefaultValue: util.MeshModeAuto,
+			Description:  "Mesh method 'auto' or 'manual'",
+			Hidden:       true,
+		},
+		{
+			Target:       "VersionMark",
+			DefaultValue: "",
+			Description:  "Specify the version of mesh service, e.g. '0.0.1' or 'mark:local'",
+		},
+		{
+			Target:       "SkipPortChecking",
+			DefaultValue: false,
+			Description:  "Do not check whether specified local ports are listened",
+		},
+		{
+			Target:       "RouterImage",
+			DefaultValue: fmt.Sprintf("%s:v%s", util.ImageKtRouter, Store.Version),
+			Description:  "(adebug only) Customize router image",
+		},
+		{
+			Target:       "VsName",
+			DefaultValue: "",
+			Description:  "(idebug only) Specify istio VirtualService name, default same as service name",
+		},
+		{
+			Target:       "DrName",
+			DefaultValue: "",
+			Description:  "(idebug only) Specify istio DestinationRule name, default same as service name",
+		},
 	}
 	if util.IsMacos() {
-		flags = append(flags,
-			OptionConfig{
-				Target:       "DnsPort",
-				DefaultValue: util.AlternativeDnsPort,
-				Description:  "(local dns mode only) Specify local DNS port",
-			}, OptionConfig{
-				Target:       "IncludeDomains",
-				DefaultValue: "",
-				Description:  "Query domain names of specified suffixes via kt DNS, e.g. 'com', use ',' separated",
-			},
-		)
+		flags = append(flags, OptionConfig{
+			Target:       "DnsPort",
+			DefaultValue: util.AlternativeDnsPort,
+			Description:  "(local dns mode only) Specify local DNS port",
+		})
 	}
 	return flags
 }

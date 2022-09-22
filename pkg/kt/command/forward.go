@@ -31,7 +31,7 @@ func NewForwardCommand() *cobra.Command {
 		RunE: func(cmd *cobra.Command, args []string) error {
 			return Forward(args)
 		},
-		Example: "ktctl forward <service-name|remote-address> [<local-port>:<remote-port>] [command options]",
+		Example: "et forward <service-name|remote-address> [<local-port>:<remote-port>] [command options]",
 	}
 
 	cmd.SetUsageTemplate(general.UsageTemplate(true))

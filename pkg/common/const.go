@@ -11,9 +11,9 @@ const (
 	StandardDnsPort = 53
 
 	// EnvVarLocalDomains environment variable for local domain config
-	EnvVarLocalDomains = "KT_LOCAL_DOMAIN"
+	EnvVarLocalDomains = "ET_LOCAL_DOMAIN"
 	// EnvVarDnsProtocol environment variable for shadow pod dns protocol
-	EnvVarDnsProtocol = "KT_DNS_PROTOCOL"
+	EnvVarDnsProtocol = "ET_DNS_PROTOCOL"
 	// EnvVarLogLevel environment variable for shadow pod log level
-	EnvVarLogLevel = "KT_LOG_LEVEL"
+	EnvVarLogLevel = "ET_LOG_LEVEL"
 )

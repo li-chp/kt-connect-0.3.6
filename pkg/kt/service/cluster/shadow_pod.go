@@ -17,7 +17,7 @@ import (
 func (k *Kubernetes) GetOrCreateShadow(name string, labels, annotations, envs map[string]string, exposePorts string, portNameDict map[int]string) (
 	string, string, string, error) {
 	// record context data
-	opt.Store.Shadow = name
+	opt.Store.Shadow = util.Append(opt.Store.Shadow, name)
 
 	// extra labels must be applied after origin labels
 	for key, val := range util.String2Map(opt.Get().Global.WithLabel) {

@@ -11,7 +11,7 @@ import (
 	"time"
 )
 
-const logFilePrefix = "kt-"
+const logFilePrefix = "et-"
 
 var BackgroundLogger = io.Discard
 

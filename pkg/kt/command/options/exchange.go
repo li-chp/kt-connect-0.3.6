@@ -11,7 +11,7 @@ func ExchangeFlags() []OptionConfig {
 			Required:     true,
 		},
 		{
-			Target:       "Mode",
+			Target:       "ExchangeMode",
 			DefaultValue: util.ExchangeModeSelector,
 			Description:  "Exchange method 'selector', 'scale' or 'ephemeral'(experimental)",
 		},

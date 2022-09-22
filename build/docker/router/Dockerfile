@@ -5,4 +5,4 @@ COPY artifacts/router/router-linux-amd64 /usr/sbin/router
 
 RUN rm -f /etc/nginx/conf.d/*.conf && \
     chmod +x /usr/sbin/router && \
-    touch /var/kt.lock
+    touch /var/et.lock

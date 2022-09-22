@@ -2,6 +2,7 @@ package command
 
 import (
 	"fmt"
+	"github.com/alibaba/kt-connect/pkg/kt/command/connect"
 	"github.com/alibaba/kt-connect/pkg/kt/command/exchange"
 	"github.com/alibaba/kt-connect/pkg/kt/command/general"
 	opt "github.com/alibaba/kt-connect/pkg/kt/command/options"
@@ -12,35 +13,56 @@ import (
 )
 
 // NewExchangeCommand return new exchange command
-func NewExchangeCommand() *cobra.Command {
+func NewExchangeDebugCommand() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "exchange",
-		Short: "Redirect all requests of specified kubernetes service to local",
+		Use:   "edebug",
+		Short: "Combines connect and exchange together",
 		PreRunE: func(cmd *cobra.Command, args []string) error {
 			if len(args) == 0 {
 				return fmt.Errorf("name of service to exchange is required")
 			} else if len(args) > 1 {
-				return fmt.Errorf("too many service names are spcified (%s), should be one", strings.Join(args, ","))
+				return fmt.Errorf("too many service name are spcified (%s), should be one", strings.Join(args, ","))
 			}
 			return general.Prepare()
 		},
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return Exchange(args[0])
+			return ExchangeDebug(args[0])
 		},
-		Example: "et exchange <service-name> [command options]",
+		Example: "et edebug <service-name> [command options]",
 	}
 
 	cmd.SetUsageTemplate(general.UsageTemplate(true))
-	opt.SetOptions(cmd, cmd.Flags(), opt.Get().Exchange, opt.ExchangeFlags())
+	opt.SetOptions(cmd, cmd.Flags(), opt.Get().ExchangeDebug, opt.ExchangeDebugFlags())
 	return cmd
 }
 
 //Exchange exchange kubernetes workload
-func Exchange(resourceName string) error {
-	ch, err := general.SetupProcess(util.ComponentExchange)
+func ExchangeDebug(resourceName string) error {
+	*opt.Get().Connect = opt.Get().ExchangeDebug.ConnectOptions
+	*opt.Get().Exchange = opt.Get().ExchangeDebug.ExchangeOptions
+	ch, err := general.SetupProcess(util.ComponentExchangeDebug)
 	if err != nil {
 		return err
 	}
+	if !opt.Get().Connect.SkipCleanup {
+		go silenceCleanup()
+	}
+
+	log.Info().Msgf("Using %s mode", opt.Get().Connect.ConnectMode)
+	if opt.Get().Connect.ConnectMode == util.ConnectModeTun2Socks {
+		err = connect.ByTun2Socks()
+	} else if opt.Get().Connect.ConnectMode == util.ConnectModeShuttle {
+		err = connect.BySshuttle()
+	} else {
+		err = fmt.Errorf("invalid connect mode: '%s', supportted mode are %s, %s", opt.Get().Connect.ConnectMode,
+			util.ConnectModeTun2Socks, util.ConnectModeShuttle)
+	}
+	if err != nil {
+		return err
+	}
+	log.Info().Msg("---------------------------------------------------------------")
+	log.Info().Msgf(" All looks good, now you can access to resources in the kubernetes cluster")
+	log.Info().Msg("---------------------------------------------------------------")
 
 	if opt.Get().Exchange.SkipPortChecking {
 		if port := util.FindBrokenLocalPort(opt.Get().Exchange.Expose); port != "" {
@@ -71,13 +93,4 @@ func Exchange(resourceName string) error {
 	s := <-ch
 	log.Info().Msgf("Terminal Signal is %s", s)
 	return nil
-}
-
-func toTypeAndName(name string) (string, string) {
-	parts := strings.Split(name, "/")
-	if len(parts) > 1 {
-		return parts[0], parts[1]
-	} else {
-		return "service", parts[0]
-	}
 }

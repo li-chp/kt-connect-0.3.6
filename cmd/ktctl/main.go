@@ -14,7 +14,7 @@ import (
 )
 
 var (
-	version = "dev"
+	version = "0.3.6"
 )
 
 func init() {
@@ -34,24 +34,31 @@ func main() {
 	cobra.EnableCommandSorting = false
 
 	var rootCmd = &cobra.Command{
-		Use:     "ktctl",
+		Use:     "et",
 		Version: version,
 		Short:   "A utility tool to help you work with Kubernetes dev environment more efficiently",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			return cmd.Help()
 		},
-		Example: "ktctl <command> [command options]",
+		Example: "et <command> [command options]",
 	}
 
 	rootCmd.AddCommand(command.NewConnectCommand())
 	rootCmd.AddCommand(command.NewExchangeCommand())
-	rootCmd.AddCommand(command.NewMeshCommand())
+	rootCmd.AddCommand(command.NewExchangeDebugCommand())
+	//rootCmd.AddCommand(command.NewMeshCommand())
+	rootCmd.AddCommand(command.NewAMeshCommand())
+	rootCmd.AddCommand(command.NewIMeshCommand())
+	//rootCmd.AddCommand(command.NewMeshDebugCommand())
+	rootCmd.AddCommand(command.NewAMeshDebugCommand())
+	rootCmd.AddCommand(command.NewIMeshDebugCommand())
 	rootCmd.AddCommand(command.NewPreviewCommand())
 	rootCmd.AddCommand(command.NewForwardCommand())
 	rootCmd.AddCommand(command.NewRecoverCommand())
 	rootCmd.AddCommand(command.NewCleanCommand())
 	rootCmd.AddCommand(command.NewConfigCommand())
 	rootCmd.AddCommand(command.NewBirdseyeCommand())
+	rootCmd.AddCommand(command.NewUpgradeCommand())
 	rootCmd.SetHelpCommand(&cobra.Command{Hidden: true})
 	rootCmd.SetUsageTemplate(general.UsageTemplate(false))
 	rootCmd.SilenceUsage = true

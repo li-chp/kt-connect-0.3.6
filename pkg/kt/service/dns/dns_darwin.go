@@ -74,7 +74,7 @@ func HandleExtraDomainMapping(extraDomains map[string]string, localDnsPort int) 
 	}
 }
 
-// RestoreNameServer remove the nameservers added by ktctl
+// RestoreNameServer remove the nameservers added by et
 func RestoreNameServer() {
 	rd, _ := ioutil.ReadDir(resolverDir)
 	for _, f := range rd {

@@ -25,7 +25,7 @@ func NewBirdseyeCommand() *cobra.Command {
 		RunE: func(cmd *cobra.Command, args []string) error {
 			return Birdseye()
 		},
-		Example: "ktctl birdseye [command options]",
+		Example: "et birdseye [command options]",
 	}
 
 	cmd.SetUsageTemplate(general.UsageTemplate(false))

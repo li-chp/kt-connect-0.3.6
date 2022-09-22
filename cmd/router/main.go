@@ -15,7 +15,7 @@ func init() {
 	log.Logger = log.Output(zerolog.ConsoleWriter{Out: os.Stderr})
 }
 
-const pathKtLock = "/var/kt.lock"
+const pathKtLock = "/var/et.lock"
 const actionSetup = "setup"
 const actionAdd = "add"
 const actionRemove = "remove"
@@ -66,7 +66,7 @@ func setup(args []string) {
 	}
 	err := router.WriteKtConf(&ktConf)
 	if err != nil {
-		log.Error().Err(err).Msgf("Write kt config failed")
+		log.Error().Err(err).Msgf("Write et config failed")
 		return
 	}
 	err = router.WriteAndReloadRouteConf(&ktConf)

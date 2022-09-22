@@ -12,12 +12,12 @@ func Get(args []string) error {
 	customConfig := loadCustomConfig()
 	config, err := loadConfig()
 	if err != nil {
-		return fmt.Errorf("config file is damaged, please try repair it or use 'ktctl config unset --all'")
+		return fmt.Errorf("config file is damaged, please try repair it or use 'et config unset --all'")
 	}
 	for _, item := range args {
 		v, err2 := getConfigValue(config, item)
 		if err2 != nil {
-			return fmt.Errorf("config item '%s' is invalid, please check available config items with 'ktctl config show --all'", item)
+			return fmt.Errorf("config item '%s' is invalid, please check available config items with 'et config show --all'", item)
 		}
 		if v != "" {
 			fmt.Printf("%s = %v\n", item, v)

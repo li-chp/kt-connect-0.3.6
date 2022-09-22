@@ -12,22 +12,22 @@ import (
 )
 
 // NewMeshCommand return new mesh command
-func NewMeshCommand() *cobra.Command {
+func NewIMeshCommand() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "mesh",
-		Short: "Redirect marked requests of specified kubernetes service to local",
+		Use:   "imesh",
+		Short: "Redirect marked requests of specified kubernetes service to local, imesh is only compatible for istio",
 		PreRunE: func(cmd *cobra.Command, args []string) error {
 			if len(args) == 0 {
 				return fmt.Errorf("name of service to mesh is required")
 			} else if len(args) > 1 {
-				return fmt.Errorf("too many service names are spcified (%s), should be one", strings.Join(args, ","))
+				return fmt.Errorf("too many service name are spcified (%s), should be one", strings.Join(args, ","))
 			}
 			return general.Prepare()
 		},
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return Mesh(args[0])
+			return IMesh(args[0])
 		},
-		Example: "et mesh <service-name> [command options]",
+		Example: "et imesh <service-name> [command options]",
 	}
 
 	cmd.SetUsageTemplate(general.UsageTemplate(true))
@@ -36,7 +36,7 @@ func NewMeshCommand() *cobra.Command {
 }
 
 //Mesh exchange kubernetes workload
-func Mesh(resourceName string) error {
+func IMesh(resourceName string) error {
 	ch, err := general.SetupProcess(util.ComponentMesh)
 	if err != nil {
 		return err
@@ -58,15 +58,15 @@ func Mesh(resourceName string) error {
 		return fmt.Errorf("target port %s not exists in service %s", port, svc.Name)
 	}
 
-	log.Info().Msgf("Using %s mode", opt.Get().Mesh.MeshMode)
-	if opt.Get().Mesh.MeshMode == util.MeshModeManual {
-		err = mesh.ManualMesh(svc)
-	} else if opt.Get().Mesh.MeshMode == util.MeshModeAuto {
-		err = mesh.AutoMesh(svc)
-	} else {
-		err = fmt.Errorf("invalid mesh method '%s', supportted are %s, %s", opt.Get().Mesh.MeshMode,
-			util.MeshModeAuto, util.MeshModeManual)
-	}
+	//log.Info().Msgf("Using %s mode", opt.Get().Mesh.MeshMode)
+	//if opt.Get().Mesh.MeshMode == util.MeshModeManual {
+	err = mesh.ManualMesh(svc)
+	//} else if opt.Get().Mesh.MeshMode == util.MeshModeAuto {
+	//	err = mesh.AutoMesh(svc)
+	//} else {
+	//	err = fmt.Errorf("invalid mesh method '%s', supportted are %s, %s", opt.Get().Mesh.MeshMode,
+	//		util.MeshModeAuto, util.MeshModeManual)
+	//}
 	if err != nil {
 		return err
 	}

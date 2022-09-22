@@ -41,7 +41,7 @@ func IsProcessExist(pid int) bool {
 	if proc == nil || err != nil {
 		return false
 	}
-	return strings.Contains(proc.Executable(), "ktctl")
+	return strings.Contains(proc.Executable(), "et")
 }
 
 // CreateDirIfNotExist create dir

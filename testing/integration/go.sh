@@ -60,7 +60,7 @@ function cleanup() {
   kubectl delete namespace ${NS}
 }
 
-# Wait all resource created by ktctl get cleaned
+# Wait all resource created by et get cleaned
 function check_resources_cleaned() {
   for i in `seq 10`; do
     sleep 6
@@ -93,7 +93,7 @@ function check_job() {
   if [ ${count} -ne 1 ]; then fail "failed to setup ${1} job"; fi
 }
 
-# Check if ktctl pid file exists
+# Check if et pid file exists
 function check_pid_file() {
   pidFile=`ls -t ${HOME}/.kt/pid/${1}-*.pid | head -1`
   pid=`cat ${pidFile}`

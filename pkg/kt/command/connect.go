@@ -30,7 +30,7 @@ func NewConnectCommand() *cobra.Command {
 		RunE: func(cmd *cobra.Command, args []string) error {
 			return Connect()
 		},
-		Example: "ktctl connect [command options]",
+		Example: "et connect [command options]",
 	}
 
 	cmd.SetUsageTemplate(general.UsageTemplate(true))
@@ -49,13 +49,13 @@ func Connect() error {
 		go silenceCleanup()
 	}
 
-	log.Info().Msgf("Using %s mode", opt.Get().Connect.Mode)
-	if opt.Get().Connect.Mode == util.ConnectModeTun2Socks {
+	log.Info().Msgf("Using %s mode", opt.Get().Connect.ConnectMode)
+	if opt.Get().Connect.ConnectMode == util.ConnectModeTun2Socks {
 		err = connect.ByTun2Socks()
-	} else if opt.Get().Connect.Mode == util.ConnectModeShuttle {
+	} else if opt.Get().Connect.ConnectMode == util.ConnectModeShuttle {
 		err = connect.BySshuttle()
 	} else {
-		err = fmt.Errorf("invalid connect mode: '%s', supportted mode are %s, %s", opt.Get().Connect.Mode,
+		err = fmt.Errorf("invalid connect mode: '%s', supportted mode are %s, %s", opt.Get().Connect.ConnectMode,
 			util.ConnectModeTun2Socks, util.ConnectModeShuttle)
 	}
 	if err != nil {
@@ -105,7 +105,7 @@ func checkPermissionAndOptions() error {
 		}
 		return fmt.Errorf("permission declined, please re-run connect command with 'sudo'")
 	}
-	if opt.Get().Connect.Mode == util.ConnectModeTun2Socks && opt.Get().Connect.DnsMode == util.DnsModePodDns {
+	if opt.Get().Connect.ConnectMode == util.ConnectModeTun2Socks && opt.Get().Connect.DnsMode == util.DnsModePodDns {
 		return fmt.Errorf("dns mode '%s' is not available for connect mode '%s'", util.DnsModePodDns, util.ConnectModeTun2Socks)
 	}
 	return nil

@@ -28,7 +28,7 @@ func NewPreviewCommand() *cobra.Command {
 		RunE: func(cmd *cobra.Command, args []string) error {
 			return Preview(args[0])
 		},
-		Example: "ktctl preview <service-name> [command options]",
+		Example: "et preview <service-name> [command options]",
 	}
 
 	cmd.SetUsageTemplate(general.UsageTemplate(true))

@@ -19,7 +19,7 @@ func Show(args []string) error {
 	customConfig := loadCustomConfig()
 	config, err := loadConfig()
 	if err != nil {
-		return fmt.Errorf("config file is damaged, please try repair it or use 'ktctl config unset --all'")
+		return fmt.Errorf("config file is damaged, please try repair it or use 'et config unset --all'")
 	}
 	travelConfigItem(func(groupName string, itemName string) {
 		if util.Contains(hiddenOptions, fmt.Sprintf("%s.%s", groupName, itemName)) {

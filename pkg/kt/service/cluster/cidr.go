@@ -39,7 +39,7 @@ func (k *Kubernetes) ClusterCidr(namespace string) ([]string, []string) {
 
 	if opt.Get().Connect.IncludeIps != "" {
 		for _, ipRange := range strings.Split(opt.Get().Connect.IncludeIps, ",") {
-			if opt.Get().Connect.Mode == util.ConnectModeTun2Socks && isSingleIp(ipRange) {
+			if opt.Get().Connect.ConnectMode == util.ConnectModeTun2Socks && isSingleIp(ipRange) {
 				log.Warn().Msgf("Includes single IP '%s' is not allow in %s mode", ipRange, util.ConnectModeTun2Socks)
 			} else {
 				cidr = append(cidr, ipRange)

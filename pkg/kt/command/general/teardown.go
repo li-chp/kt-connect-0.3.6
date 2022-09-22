@@ -23,14 +23,34 @@ func CleanupWorkspace() {
 	if opt.Store.Component == util.ComponentConnect {
 		recoverGlobalHostsAndProxy()
 	}
-
 	if opt.Store.Component == util.ComponentExchange {
 		recoverExchangedTarget()
 	} else if opt.Store.Component == util.ComponentMesh {
 		recoverAutoMeshRoute()
+		recoverIstio()
+	} else if opt.Store.Component == util.ComponentMeshDebug {
+		recoverGlobalHostsAndProxy()
+		recoverAutoMeshRoute()
+		recoverIstio()
+	} else if opt.Store.Component == util.ComponentExchangeDebug {
+		recoverGlobalHostsAndProxy()
+		recoverExchangedTarget()
 	}
 	cleanService()
 	cleanShadowPodAndConfigMap()
+}
+
+func recoverIstio() {
+	if opt.Store.VirtualServicePatch == true {
+		log.Info().Msgf("Cleaning VirtualService....")
+		cluster.Ins().PatchVirtualService(opt.Get().Mesh.VsName, "service",
+			opt.Get().Global.Namespace, "remove", "meshKey", "meshVersion")
+	}
+	if opt.Store.DestinationRulePatch == true {
+		log.Info().Msgf("Cleaning DestinationRule....")
+		cluster.Ins().PatchDestinationRule(opt.Get().Mesh.DrName, opt.Get().Global.Namespace,
+			"remove", "meshKey", "meshVersion")
+	}
 }
 
 func recoverGlobalHostsAndProxy() {
@@ -78,7 +98,7 @@ func recoverExchangedTarget() {
 		// process exit before target exchanged
 		return
 	}
-	if opt.Get().Exchange.Mode == util.ExchangeModeScale {
+	if opt.Get().Exchange.ExchangeMode == util.ExchangeModeScale {
 		log.Info().Msgf("Recovering origin deployment %s", opt.Store.Origin)
 		err := cluster.Ins().ScaleTo(opt.Store.Origin, opt.Get().Global.Namespace, &opt.Store.Replicas)
 		if err != nil {
@@ -93,7 +113,7 @@ func recoverExchangedTarget() {
 			ch <- os.Interrupt
 		}()
 		_ = <-ch
-	} else if opt.Get().Exchange.Mode == util.ExchangeModeSelector {
+	} else if opt.Get().Exchange.ExchangeMode == util.ExchangeModeSelector {
 		RecoverOriginalService(opt.Store.Origin, opt.Get().Global.Namespace)
 		log.Info().Msgf("Original service %s recovered", opt.Store.Origin)
 	}
@@ -233,7 +253,7 @@ func cleanShadowPodAndConfigMap() {
 				}
 			}
 		}
-		if opt.Get().Exchange.Mode == util.ExchangeModeEphemeral {
+		if opt.Get().Exchange.ExchangeMode == util.ExchangeModeEphemeral {
 			for _, shadow := range strings.Split(opt.Store.Shadow, ",") {
 				log.Info().Msgf("Removing ephemeral container of pod %s", shadow)
 				err = cluster.Ins().RemoveEphemeralContainer(util.KtExchangeContainer, shadow, opt.Get().Global.Namespace)

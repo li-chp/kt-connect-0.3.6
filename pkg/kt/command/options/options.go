@@ -21,7 +21,7 @@ type ConnectOptions struct {
 	IncludeIps       string
 	ExcludeIps       string
 	IngressIp        string
-	Mode             string
+	ConnectMode      string
 	DnsMode          string
 	ShareShadow      bool
 	ClusterDomain    string
@@ -31,19 +31,33 @@ type ConnectOptions struct {
 
 // ExchangeOptions ...
 type ExchangeOptions struct {
-	Mode             string
+	ExchangeMode     string
 	Expose           string
 	RecoverWaitTime  int
 	SkipPortChecking bool
 }
 
+// ExchangeDebugOptions ...
+type ExchangeDebugOptions struct {
+	ConnectOptions
+	ExchangeOptions
+}
+
 // MeshOptions ...
 type MeshOptions struct {
-	Mode             string
+	MeshMode         string
 	Expose           string
 	VersionMark      string
 	RouterImage      string
 	SkipPortChecking bool
+	VsName           string
+	DrName           string
+}
+
+// MeshDebugOptions ...
+type MeshDebugOptions struct {
+	ConnectOptions
+	MeshOptions
 }
 
 // RecoverOptions ...
@@ -55,6 +69,11 @@ type PreviewOptions struct {
 	External         bool
 	Expose           string
 	SkipPortChecking bool
+}
+
+// UpgradeOptions ...
+type UpgradeOptions struct {
+	ServerUrl string
 }
 
 // ForwardOptions ...
@@ -103,16 +122,19 @@ type GlobalOptions struct {
 
 // DaemonOptions cli options
 type DaemonOptions struct {
-	Connect  *ConnectOptions
-	Exchange *ExchangeOptions
-	Mesh     *MeshOptions
-	Preview  *PreviewOptions
-	Forward  *ForwardOptions
-	Recover  *RecoverOptions
-	Clean    *CleanOptions
-	Config   *ConfigOptions
-	Birdseye *BirdseyeOptions
-	Global   *GlobalOptions
+	Connect       *ConnectOptions
+	Exchange      *ExchangeOptions
+	ExchangeDebug *ExchangeDebugOptions
+	Mesh          *MeshOptions
+	MeshDebug     *MeshDebugOptions
+	Preview       *PreviewOptions
+	Forward       *ForwardOptions
+	Recover       *RecoverOptions
+	Clean         *CleanOptions
+	Config        *ConfigOptions
+	Birdseye      *BirdseyeOptions
+	Global        *GlobalOptions
+	Upgrade       *UpgradeOptions
 }
 
 var opt *DaemonOptions
@@ -121,16 +143,19 @@ var opt *DaemonOptions
 func Get() *DaemonOptions {
 	if opt == nil {
 		opt = &DaemonOptions{
-			Global:   &GlobalOptions{},
-			Connect:  &ConnectOptions{},
-			Exchange: &ExchangeOptions{},
-			Mesh:     &MeshOptions{},
-			Preview:  &PreviewOptions{},
-			Forward:  &ForwardOptions{},
-			Recover:  &RecoverOptions{},
-			Clean:    &CleanOptions{},
-			Birdseye: &BirdseyeOptions{},
-			Config:   &ConfigOptions{},
+			Global:        &GlobalOptions{},
+			Connect:       &ConnectOptions{},
+			Exchange:      &ExchangeOptions{},
+			ExchangeDebug: &ExchangeDebugOptions{},
+			Mesh:          &MeshOptions{},
+			MeshDebug:     &MeshDebugOptions{},
+			Preview:       &PreviewOptions{},
+			Forward:       &ForwardOptions{},
+			Recover:       &RecoverOptions{},
+			Clean:         &CleanOptions{},
+			Birdseye:      &BirdseyeOptions{},
+			Config:        &ConfigOptions{},
+			Upgrade:       &UpgradeOptions{},
 		}
 		if customize, exist := GetCustomizeKtConfig(); exist {
 			mergeOptions(opt, []byte(customize))

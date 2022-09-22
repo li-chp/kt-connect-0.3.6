@@ -35,7 +35,7 @@ func RandomSeconds(min, max int) time.Duration {
 
 // RandomPort Generate random number [1024, 65535)
 func RandomPort() int {
-	return rand.Intn(65535-1024) + 1024
+	return rand.Intn(65535-30000) + 1024
 }
 
 // String2Map Convert parameter string to real map "k1=v1,k2=v2" -> {"k1":"v1","k2","v2"}

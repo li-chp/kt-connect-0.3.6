@@ -6,17 +6,17 @@ import (
 	"io/ioutil"
 )
 
-const pathKtConf = "/etc/kt.conf"
+const pathKtConf = "/etc/et.conf"
 
 func ReadKtConf() (*KtConf, error) {
 	ktConfFile, err := ioutil.ReadFile(pathKtConf)
 	if err != nil {
-		return nil, fmt.Errorf("failed to read kt configuration file: %s", err)
+		return nil, fmt.Errorf("failed to read et configuration file: %s", err)
 	}
 	var ktConf KtConf
 	err = json.Unmarshal(ktConfFile, &ktConf)
 	if err != nil {
-		return nil, fmt.Errorf("failed to parse kt configuration file: %s", err)
+		return nil, fmt.Errorf("failed to parse et configuration file: %s", err)
 	}
 	return &ktConf, nil
 }

@@ -16,12 +16,12 @@ func Unset(args []string) error {
 	}
 	config, err := loadConfig()
 	if err != nil {
-		return fmt.Errorf("config file is damaged, please try repair it or use 'ktctl config unset --all'")
+		return fmt.Errorf("config file is damaged, please try repair it or use 'et config unset --all'")
 	}
 	for _, item := range args {
 		err = unsetConfigValue(config, item)
 		if err != nil {
-			return fmt.Errorf("%s, please check available config items with 'ktctl config show --all'", err)
+			return fmt.Errorf("%s, please check available config items with 'et config show --all'", err)
 		}
 	}
 	return saveConfig(config)

@@ -16,7 +16,7 @@ func NewConfigCommand() *cobra.Command {
 			opt.HideGlobalFlags(cmd)
 			return cmd.Help()
 		},
-		Example: "ktctl config <sub-command> [options]",
+		Example: "et config <sub-command> [options]",
 	}
 
 	cmd.AddCommand(general.SimpleSubCommand("show", "Show all available and configured options", config.Show, config.ShowHandle))

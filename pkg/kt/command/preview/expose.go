@@ -13,7 +13,7 @@ import (
 // Expose create a new service in cluster
 func Expose(serviceName string) error {
 	version := strings.ToLower(util.RandomString(5))
-	shadowPodName := fmt.Sprintf("%s-kt-%s", serviceName, version)
+	shadowPodName := fmt.Sprintf("%s-et-%s", serviceName, version)
 	labels := map[string]string{
 		util.KtRole:   util.RolePreviewShadow,
 		util.KtTarget: util.RandomString(20),

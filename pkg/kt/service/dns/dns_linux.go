@@ -52,7 +52,7 @@ func HandleExtraDomainMapping(extraDomains map[string]string, localDnsPort int) 
 	// pass
 }
 
-// RestoreNameServer remove the nameservers added by ktctl
+// RestoreNameServer remove the nameservers added by et
 func RestoreNameServer() {
 	restoreResolvConf()
 	restoreIptables()

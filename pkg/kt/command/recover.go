@@ -32,7 +32,7 @@ func NewRecoverCommand() *cobra.Command {
 		RunE: func(cmd *cobra.Command, args []string) error {
 			return Recover(args[0])
 		},
-		Example: "ktctl recover [command options]",
+		Example: "et recover [command options]",
 	}
 
 	cmd.SetUsageTemplate(general.UsageTemplate(true))
@@ -63,7 +63,7 @@ func Recover(serviceName string) error {
 		svc.Annotations = map[string]string{}
 		if targetRole == "" {
 			if svc.Spec.Selector[util.KtRole] != "" {
-				log.Error().Msgf("Service %s is selecting kt pods, but cannot be recovered automatically", serviceName)
+				log.Error().Msgf("Service %s is selecting et pods, but cannot be recovered automatically", serviceName)
 			} else {
 				log.Info().Msgf("Service %s is clean and tidy, nothing would be done", serviceName)
 			}
@@ -88,7 +88,7 @@ func Recover(serviceName string) error {
 			log.Info().Msgf("Service %s is exchanged, recovering", serviceName)
 			return recover.HandleExchangedBySelectorService(svc, targetDeployment, targetPod)
 		} else {
-			log.Info().Msgf("Service %s is selecting non-kt pods, recovering", serviceName)
+			log.Info().Msgf("Service %s is selecting non-et pods, recovering", serviceName)
 			return recover.HandleServiceSelectorAndRemotePods(svc, targetDeployment, targetPod)
 		}
 	} else {
@@ -102,7 +102,7 @@ func Recover(serviceName string) error {
 			return recover.UnlockServiceOnly(svc)
 		}
 	}
-	log.Info().Msgf("Service %s neither exchanged nor meshed by kt, nothing would be done", serviceName)
+	log.Info().Msgf("Service %s neither exchanged nor meshed by et, nothing would be done", serviceName)
 	return nil
 }
 
