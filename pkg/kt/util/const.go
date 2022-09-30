@@ -26,20 +26,20 @@ const (
 	ComponentUpgrade = "upgrade"
 
 	// ImageKtShadow default shadow image
-	ImageKtShadow = "registry.cn-hangzhou.aliyuncs.com/rdc-incubator/kt-connect-shadow"
-	// ImageKtRouter default router image
-	ImageKtRouter = "registry.cn-hangzhou.aliyuncs.com/rdc-incubator/kt-connect-router"
-	// ImageKtNavigator default navigator image
-	ImageKtNavigator = "registry.cn-hangzhou.aliyuncs.com/rdc-incubator/kt-connect-navigator"
-
-	//ImageKtShadow = "10.160.22.6:8036/et-connect-shadow"
+	//ImageKtShadow = "registry.cn-hangzhou.aliyuncs.com/rdc-incubator/kt-connect-shadow"
 	//// ImageKtRouter default router image
-	//ImageKtRouter = "10.160.22.6:8036/et-connect-router"
+	//ImageKtRouter = "registry.cn-hangzhou.aliyuncs.com/rdc-incubator/kt-connect-router"
 	//// ImageKtNavigator default navigator image
-	//ImageKtNavigator = "10.160.22.6:8036/et-connect-navigator"
-	//// ImageKtNavigator default navigator image
-	//UpgradeServerUrl = "http://10.160.22.194/et-release"
-	UpgradeServerUrl = "http://10.10.125.89/et-release"
+	//ImageKtNavigator = "registry.cn-hangzhou.aliyuncs.com/rdc-incubator/kt-connect-navigator"
+
+	ImageKtShadow = "10.160.22.6:8036/et-connect-shadow"
+	// ImageKtRouter default router image
+	ImageKtRouter = "10.160.22.6:8036/et-connect-router"
+	// ImageKtNavigator default navigator image
+	ImageKtNavigator = "10.160.22.6:8036/et-connect-navigator"
+	// ImageKtNavigator default navigator image
+	UpgradeServerUrl = "http://10.160.22.194/et-release"
+	//UpgradeServerUrl = "http://10.10.125.89/et-release"
 
 	// ConnectModeShuttle sshuttle mode
 	ConnectModeShuttle = "sshuttle"
