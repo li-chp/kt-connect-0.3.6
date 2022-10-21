@@ -118,6 +118,7 @@ type GlobalOptions struct {
 	Context             string
 	PodQuota            string
 	ListenCheck         bool
+	IpVersion           int
 }
 
 // DaemonOptions cli options

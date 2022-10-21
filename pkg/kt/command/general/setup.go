@@ -16,6 +16,7 @@ import (
 	"os"
 	"os/signal"
 	"runtime"
+	"strings"
 	"syscall"
 )
 
@@ -122,6 +123,10 @@ func combineKubeOpts() (err error) {
 	opt.Store.Clientset = clientSet
 	opt.Store.RestConfig = restConfig
 	opt.Store.IstioClient = istioClient
+
+	if opt.Get().Global.IpVersion == 6 || strings.Contains(restConfig.Host, "[") {
+		opt.Store.Ipv6Cluster = true
+	}
 
 	clusterName := "none"
 	for name, context := range config.Contexts {

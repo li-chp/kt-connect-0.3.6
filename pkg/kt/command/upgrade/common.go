@@ -65,20 +65,20 @@ func Handle(serverUrl, currentVersion string) error {
 func analyse(currentVersion string, body []byte) []string {
 	// 去掉最后一个回车，并分割成数组
 	versionArray := strings.Split(strings.TrimRight(string(body), "\n"), "\n")
-	// 统计要升级的版本
-	var forwardVersion []string
-	for i := 0; i < len(versionArray); i++ {
-		if versionArray[i] == currentVersion && i+1 != len(versionArray) {
-			forwardVersion = versionArray[i+1:]
-			break
-		}
-	}
-	// 如果当前版本不在服务端列表中，则全部展示给用户选择
-	if !IsContainInArray(currentVersion, versionArray) {
-		forwardVersion = versionArray
-	}
+	//// 统计要升级的版本
+	//var forwardVersion []string
+	//for i := 0; i < len(versionArray); i++ {
+	//	if versionArray[i] == currentVersion && i+1 != len(versionArray) {
+	//		forwardVersion = versionArray[i+1:]
+	//		break
+	//	}
+	//}
+	//// 如果当前版本不在服务端列表中，则全部展示给用户选择
+	//if !IsContainInArray(currentVersion, versionArray) {
+	//	forwardVersion = versionArray
+	//}
 
-	return forwardVersion
+	return versionArray
 }
 
 func DownloadAndRename(serverUrl, userSelectVersion string) error {

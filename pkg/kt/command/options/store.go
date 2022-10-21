@@ -38,4 +38,6 @@ type RuntimeStore struct {
 	VirtualServicePatch bool
 	// DR
 	DestinationRulePatch bool
+	// isIpv6Cluster
+	Ipv6Cluster bool
 }

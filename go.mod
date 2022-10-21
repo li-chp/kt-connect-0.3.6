@@ -19,6 +19,7 @@ require (
 	golang.org/x/sys v0.0.0-20220405210540-1e041c57c461
 	golang.zx2c4.com/wintun v0.0.0-20211104114900-415007cec224
 	gopkg.in/yaml.v3 v3.0.0
+	istio.io/api v0.0.0-20220728184806-7837c4e62d82
 	istio.io/client-go v1.14.3
 	k8s.io/api v0.23.5
 	k8s.io/apimachinery v0.23.5
@@ -69,7 +70,6 @@ require (
 	gopkg.in/inf.v0 v0.9.1 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 	gvisor.dev/gvisor v0.0.0-20220405222207-795f4f0139bb // indirect
-	istio.io/api v0.0.0-20220728184806-7837c4e62d82 // indirect
 	k8s.io/kube-openapi v0.0.0-20211115234752-e816edb12b65 // indirect
 	k8s.io/utils v0.0.0-20211116205334-6203023598ed // indirect
 	sigs.k8s.io/json v0.0.0-20211020170558-c049b76a60c6 // indirect

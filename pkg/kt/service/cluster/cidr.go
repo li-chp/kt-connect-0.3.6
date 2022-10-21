@@ -16,17 +16,23 @@ import (
 func (k *Kubernetes) ClusterCidr(namespace string) ([]string, []string) {
 	ips := getServiceIps(k.Clientset, namespace)
 	svcCidr := calculateMinimalIpRange(ips)
+	log.Debug().Msgf("Service ips are: %v", ips)
 	log.Debug().Msgf("Service CIDR are: %v", svcCidr)
 
 	var podCidr []string
 	if !opt.Get().Connect.DisablePodIp {
 		ips = getPodIps(k.Clientset, namespace)
 		podCidr = calculateMinimalIpRange(ips)
+		log.Debug().Msgf("Pod ips are: %v", ips)
 		log.Debug().Msgf("Pod CIDR are: %v", podCidr)
 	}
 
 	apiServerIp := util.ExtractHostIp(opt.Store.RestConfig.Host)
 	log.Debug().Msgf("Using cluster IP %s", apiServerIp)
+
+	if opt.Store.Ipv6Cluster == true {
+		apiServerIp = strings.Split(strings.Split(opt.Store.RestConfig.Host, "[")[1], "]")[0]
+	}
 
 	cidr := mergeIpRange(svcCidr, podCidr, apiServerIp)
 	log.Debug().Msgf("Cluster CIDR are: %v", cidr)
@@ -35,6 +41,7 @@ func (k *Kubernetes) ClusterCidr(namespace string) ([]string, []string) {
 	var excludeCidr []string
 	if len(apiServerIp) > 0 {
 		excludeIps = append(excludeIps, apiServerIp+"/32")
+		log.Debug().Msgf("excludeIps are: %v", excludeIps)
 	}
 
 	if opt.Get().Connect.IncludeIps != "" {
@@ -71,6 +78,13 @@ func (k *Kubernetes) ClusterCidr(namespace string) ([]string, []string) {
 	}
 	if len(excludeCidr) > 0 {
 		log.Debug().Msgf("Non-cluster CIDR are: %v", excludeCidr)
+	}
+
+	// add by lichp, remove ipv6 api address
+	if opt.Store.Ipv6Cluster == true {
+		s := strings.Split(apiServerIp, ":")
+		ipmask := fmt.Sprintf("%s:%s::/32", s[0], s[1])
+		cidr = util.ArrayDelete(cidr, ipmask)
 	}
 	return cidr, excludeCidr
 }
@@ -174,7 +188,24 @@ func getServiceIps(k kubernetes.Interface, namespace string) []string {
 	return ips
 }
 
+func calculateMinimalIpv6Range(ips []string) []string {
+	var miniRange []string
+	for _, ip := range ips {
+		s := strings.Split(ip, ":")
+		ipmask := fmt.Sprintf("%s:%s::/32", s[0], s[1])
+		if !util.Contains(miniRange, ipmask) {
+			miniRange = append(miniRange, ipmask)
+		}
+
+	}
+	return miniRange
+}
+
 func calculateMinimalIpRange(ips []string) []string {
+	if opt.Store.Ipv6Cluster == true {
+		return calculateMinimalIpv6Range(ips)
+	}
+
 	var miniBins [][32]int
 	threshold := 16
 	withAlign := true
