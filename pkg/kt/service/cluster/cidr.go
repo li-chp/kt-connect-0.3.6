@@ -30,7 +30,7 @@ func (k *Kubernetes) ClusterCidr(namespace string) ([]string, []string) {
 	apiServerIp := util.ExtractHostIp(opt.Store.RestConfig.Host)
 	log.Debug().Msgf("Using cluster IP %s", apiServerIp)
 
-	if opt.Store.Ipv6Cluster == true {
+	if opt.Store.Ipv6Cluster == true && strings.Contains(apiServerIp, ":") {
 		apiServerIp = strings.Split(strings.Split(opt.Store.RestConfig.Host, "[")[1], "]")[0]
 	}
 
@@ -81,7 +81,7 @@ func (k *Kubernetes) ClusterCidr(namespace string) ([]string, []string) {
 	}
 
 	// add by lichp, remove ipv6 api address
-	if opt.Store.Ipv6Cluster == true {
+	if opt.Store.Ipv6Cluster == true && strings.Contains(apiServerIp, ":") {
 		s := strings.Split(apiServerIp, ":")
 		ipmask := fmt.Sprintf("%s:%s::/32", s[0], s[1])
 		cidr = util.ArrayDelete(cidr, ipmask)
@@ -191,6 +191,9 @@ func getServiceIps(k kubernetes.Interface, namespace string) []string {
 func calculateMinimalIpv6Range(ips []string) []string {
 	var miniRange []string
 	for _, ip := range ips {
+		if strings.Contains(ip, ".") {
+			continue
+		}
 		s := strings.Split(ip, ":")
 		ipmask := fmt.Sprintf("%s:%s::/32", s[0], s[1])
 		if !util.Contains(miniRange, ipmask) {
@@ -210,6 +213,9 @@ func calculateMinimalIpRange(ips []string) []string {
 	threshold := 16
 	withAlign := true
 	for _, ip := range ips {
+		if strings.Contains(ip, ":") {
+			continue
+		}
 		ipBin, err := ipToBin(ip)
 		if err != nil {
 			// skip invalid ip
