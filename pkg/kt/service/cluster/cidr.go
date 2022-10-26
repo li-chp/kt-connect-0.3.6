@@ -103,7 +103,7 @@ func mergeIpRange(svcCidr []string, podCidr []string, apiServerIp string) []stri
 	}
 
 	// A workaround of issue-320
-	return append(removeCidrOf(svcCidr, apiServerIp), removeCidrOf(podCidr, apiServerIp)...)
+	return append(removeCidrOf(svcCidr, apiServerIp+"/32"), removeCidrOf(podCidr, apiServerIp+"/32")...)
 }
 
 func removeCidrOf(cidrRanges []string, ipRange string) []string {
