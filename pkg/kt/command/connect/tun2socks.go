@@ -125,7 +125,7 @@ func setupSocks5HeartBeat(podIP, socks5Address string) *time.Ticker {
 		for {
 			select {
 			case <-ticker.C:
-				if c, err2 := dialer.Dial("tcp", fmt.Sprintf("%s:%d", podIP, common.StandardSshPort)); err2 != nil {
+				if c, err2 := dialer.Dial("tcp", fmt.Sprintf("[%s]:%d", podIP, common.StandardSshPort)); err2 != nil {
 					log.Debug().Err(err2).Msgf("Socks proxy heartbeat interrupted")
 				} else {
 					_ = c.Close()
