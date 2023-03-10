@@ -2,6 +2,7 @@ package options
 
 import (
 	versionedclient "istio.io/client-go/pkg/clientset/versioned"
+	"k8s.io/client-go/dynamic"
 	"k8s.io/client-go/kubernetes"
 	"k8s.io/client-go/rest"
 )
@@ -14,6 +15,8 @@ type RuntimeStore struct {
 	Clientset kubernetes.Interface
 	// IstioClient for kubernetes operation
 	IstioClient versionedclient.Interface
+	// IstioClient for kubernetes operation
+	DynamicClient dynamic.Interface
 	// RestConfig kubectl config
 	RestConfig *rest.Config
 	// Version et version

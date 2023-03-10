@@ -76,6 +76,13 @@ type UpgradeOptions struct {
 	ServerUrl string
 }
 
+// ApplyOptions ...
+type InstallOptions struct {
+}
+
+type UninstallOptions struct {
+}
+
 // ForwardOptions ...
 type ForwardOptions struct {
 }
@@ -136,6 +143,8 @@ type DaemonOptions struct {
 	Birdseye      *BirdseyeOptions
 	Global        *GlobalOptions
 	Upgrade       *UpgradeOptions
+	Install       *InstallOptions
+	Uninstall     *UninstallOptions
 }
 
 var opt *DaemonOptions
@@ -157,6 +166,8 @@ func Get() *DaemonOptions {
 			Birdseye:      &BirdseyeOptions{},
 			Config:        &ConfigOptions{},
 			Upgrade:       &UpgradeOptions{},
+			Install:       &InstallOptions{},
+			Uninstall:     &UninstallOptions{},
 		}
 		if customize, exist := GetCustomizeKtConfig(); exist {
 			mergeOptions(opt, []byte(customize))

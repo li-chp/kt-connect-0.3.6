@@ -7,6 +7,7 @@ import (
 	appV1 "k8s.io/api/apps/v1"
 	coreV1 "k8s.io/api/core/v1"
 	extV1 "k8s.io/api/extensions/v1beta1"
+	"k8s.io/client-go/dynamic"
 	"k8s.io/client-go/kubernetes"
 )
 
@@ -64,12 +65,16 @@ type KubernetesInterface interface {
 	GetDestinationRule(name, namespace string) (*v1alpha3.DestinationRule, error)
 	PatchVirtualService(name, service, namespace, op, meshKey, meshVersion string) (*v1alpha3.VirtualService, error)
 	PatchDestinationRule(name, namespace string, op, meshKey, meshVersion string) (*v1alpha3.DestinationRule, error)
+
+	CreateByFile(filebyte []byte) error
+	DeleteByFile(filebyte []byte) error
 }
 
 // Kubernetes implements KubernetesInterface
 type Kubernetes struct {
-	Clientset   kubernetes.Interface
-	IstioClient versionedclient.Interface
+	Clientset     kubernetes.Interface
+	IstioClient   versionedclient.Interface
+	DynamicClient dynamic.Interface
 }
 
 // Cli the singleton type
@@ -79,8 +84,9 @@ var instance *Kubernetes
 func Ins() KubernetesInterface {
 	if instance == nil {
 		instance = &Kubernetes{
-			Clientset:   opt.Store.Clientset,
-			IstioClient: opt.Store.IstioClient,
+			Clientset:     opt.Store.Clientset,
+			IstioClient:   opt.Store.IstioClient,
+			DynamicClient: opt.Store.DynamicClient,
 		}
 	}
 	return instance

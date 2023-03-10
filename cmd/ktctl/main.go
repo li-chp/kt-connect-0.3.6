@@ -59,6 +59,8 @@ func main() {
 	rootCmd.AddCommand(command.NewConfigCommand())
 	rootCmd.AddCommand(command.NewBirdseyeCommand())
 	rootCmd.AddCommand(command.NewUpgradeCommand())
+	rootCmd.AddCommand(command.NewInstallCommand())
+	rootCmd.AddCommand(command.NewUninstallCommand())
 	rootCmd.SetHelpCommand(&cobra.Command{Hidden: true})
 	rootCmd.SetUsageTemplate(general.UsageTemplate(false))
 	rootCmd.SilenceUsage = true

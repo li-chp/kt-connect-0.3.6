@@ -9,6 +9,7 @@ import (
 	"github.com/rs/zerolog/log"
 	versionedclient "istio.io/client-go/pkg/clientset/versioned"
 	k8sRuntime "k8s.io/apimachinery/pkg/util/runtime"
+	"k8s.io/client-go/dynamic"
 	"k8s.io/client-go/kubernetes"
 	"k8s.io/client-go/tools/clientcmd"
 	clientcmdapi "k8s.io/client-go/tools/clientcmd/api"
@@ -120,9 +121,14 @@ func combineKubeOpts() (err error) {
 	if err != nil {
 		return err
 	}
+	dynamicClient, err := dynamic.NewForConfig(restConfig)
+	if err != nil {
+		return err
+	}
 	opt.Store.Clientset = clientSet
 	opt.Store.RestConfig = restConfig
 	opt.Store.IstioClient = istioClient
+	opt.Store.DynamicClient = dynamicClient
 
 	if opt.Get().Global.IpVersion == 6 || strings.Contains(restConfig.Host, "[") {
 		opt.Store.Ipv6Cluster = true
