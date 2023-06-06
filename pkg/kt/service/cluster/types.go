@@ -14,6 +14,7 @@ import (
 // KubernetesInterface kubernetes interface
 type KubernetesInterface interface {
 	GetPod(name string, namespace string) (*coreV1.Pod, error)
+	GetAllPodInNamespace(namespace string) (*coreV1.PodList, error)
 	GetPodsByLabel(labels map[string]string, namespace string) (*coreV1.PodList, error)
 	UpdatePod(pod *coreV1.Pod) (*coreV1.Pod, error)
 	RemovePod(name, namespace string) error
@@ -66,8 +67,11 @@ type KubernetesInterface interface {
 	PatchVirtualService(name, service, namespace, op, meshKey, meshVersion string) (*v1alpha3.VirtualService, error)
 	PatchDestinationRule(name, namespace string, op, meshKey, meshVersion string) (*v1alpha3.DestinationRule, error)
 
-	CreateByFile(filebyte []byte) error
-	DeleteByFile(filebyte []byte) error
+	CreateByFile(filebyte []byte, namespace string) error
+	DeleteByFile(filebyte []byte, namespace string) error
+
+	GetNamespace(name string) (*coreV1.Namespace, error)
+	PatchNamespaceLabel(namespace, key, value string) (*coreV1.Namespace, error)
 }
 
 // Kubernetes implements KubernetesInterface

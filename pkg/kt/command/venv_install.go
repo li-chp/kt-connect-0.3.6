@@ -1,6 +1,7 @@
 package command
 
 import (
+	"fmt"
 	"github.com/alibaba/kt-connect/pkg/kt/command/general"
 	"github.com/alibaba/kt-connect/pkg/kt/command/kubectl"
 	opt "github.com/alibaba/kt-connect/pkg/kt/command/options"
@@ -9,10 +10,10 @@ import (
 )
 
 // NewApplyCommand return new config command
-func NewInstallCommand() *cobra.Command {
+func NewVenvInstallCommand() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "etck-install",
-		Short: "Install etck plugin to kubernetes cluster",
+		Use:   "venv-install",
+		Short: "Install virtual environment to kubernetes cluster",
 		PreRunE: func(cmd *cobra.Command, args []string) error {
 			//if len(args) == 0 {
 			//	return fmt.Errorf("name of plugin to install is required")
@@ -25,27 +26,30 @@ func NewInstallCommand() *cobra.Command {
 		},
 		RunE: func(cmd *cobra.Command, args []string) error {
 			opt.HideGlobalFlags(cmd)
-			return Install(args[0])
+			return InstallVenv()
 		},
-		Example: "et install [options]",
+		Example: "et venv-install [options]",
 	}
 
 	cmd.SetUsageTemplate(general.UsageTemplate(false))
-	opt.SetOptions(cmd, cmd.Flags(), opt.Get().Install, opt.InstallFlags())
+	opt.SetOptions(cmd, cmd.Flags(), opt.Get().VenvInstall, opt.VenvInstallFlags())
 	return cmd
 }
 
 // Connect setup vpn to kubernetes cluster
-func Install(plugin string) error {
-	err := kubectl.InstallEtck()
+func InstallVenv() error {
+	if opt.Get().VenvInstall.VenvVersion != "v0.6.0" && opt.Get().VenvInstall.VenvVersion != "v0.6.1" {
+		return fmt.Errorf("Wrong venv version you prompt!")
+	}
+	err := kubectl.InstallVenv()
 	if err != nil {
 		return err
 	}
 
-	log.Info().Msgf("etck-controller is ready")
-	log.Info().Msgf("enable injection please label your namespace first")
+	log.Info().Msgf("virtual environment is ready")
+	//log.Info().Msgf("enable injection please label your namespace first")
 	log.Info().Msg("---------------------------------------------------------------")
-	log.Info().Msgf("kubectl label namespace your-namespace etck-injection=enabled --overwrite")
+	log.Info().Msgf(" All looks good, now you can access to virtual environment in the kubernetes cluster")
 	log.Info().Msg("---------------------------------------------------------------")
 	return nil
 }

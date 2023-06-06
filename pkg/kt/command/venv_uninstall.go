@@ -9,10 +9,10 @@ import (
 )
 
 // NewApplyCommand return new config command
-func NewInstallCommand() *cobra.Command {
+func NewVenvUninstallCommand() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "etck-install",
-		Short: "Install etck plugin to kubernetes cluster",
+		Use:   "venv-uninstall",
+		Short: "Uninstall virtual environment from kubernetes cluster",
 		PreRunE: func(cmd *cobra.Command, args []string) error {
 			//if len(args) == 0 {
 			//	return fmt.Errorf("name of plugin to install is required")
@@ -25,27 +25,29 @@ func NewInstallCommand() *cobra.Command {
 		},
 		RunE: func(cmd *cobra.Command, args []string) error {
 			opt.HideGlobalFlags(cmd)
-			return Install(args[0])
+			return UninstallVenv()
 		},
-		Example: "et install [options]",
+		Example: "et uninstall <plugins> [options]",
 	}
 
 	cmd.SetUsageTemplate(general.UsageTemplate(false))
-	opt.SetOptions(cmd, cmd.Flags(), opt.Get().Install, opt.InstallFlags())
+	opt.SetOptions(cmd, cmd.Flags(), opt.Get().VenvUninstall, opt.VenvUninstallFlags())
 	return cmd
 }
 
 // Connect setup vpn to kubernetes cluster
-func Install(plugin string) error {
-	err := kubectl.InstallEtck()
+func UninstallVenv() error {
+	err := kubectl.UninstallVenvOperator()
 	if err != nil {
 		return err
 	}
+	if true == opt.Get().VenvUninstall.RemoveAll {
+		kubectl.UninstallVenvController()
+	}
 
-	log.Info().Msgf("etck-controller is ready")
-	log.Info().Msgf("enable injection please label your namespace first")
+	log.Info().Msgf("Virtual environment is removed")
 	log.Info().Msg("---------------------------------------------------------------")
-	log.Info().Msgf("kubectl label namespace your-namespace etck-injection=enabled --overwrite")
+	log.Info().Msgf("All looks good, now virtual environment is removed from the kubernetes cluster")
 	log.Info().Msg("---------------------------------------------------------------")
 	return nil
 }

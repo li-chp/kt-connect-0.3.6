@@ -1,0 +1,12 @@
+apiVersion: env.cmss.com/v1alpha2
+kind: VirtualEnvironment
+metadata:
+  name: default-virtualenv
+spec:
+  envHeader:
+    name: cmss-env-mark
+    autoInject: true
+  envLabel:
+    name: virtual-env
+    splitter: "."
+    defaultSubset: dev

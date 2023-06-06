@@ -15,7 +15,7 @@ import (
 	"strings"
 )
 
-func (k *Kubernetes) CreateByFile(filebytes []byte) error {
+func (k *Kubernetes) CreateByFile(filebytes []byte, namespace string) error {
 
 	//filebytes, err := ioutil.ReadFile(filepath)
 	//if err != nil {
@@ -44,7 +44,9 @@ func (k *Kubernetes) CreateByFile(filebytes []byte) error {
 			return err
 		}
 		var dri dynamic.ResourceInterface
-		if mapping.Scope.Name() == meta.RESTScopeNameNamespace {
+		if namespace != "" {
+			dri = k.DynamicClient.Resource(mapping.Resource).Namespace(namespace)
+		} else if mapping.Scope.Name() == meta.RESTScopeNameNamespace {
 			//if unstructuredObj.GetNamespace() == "" {
 			//	unstructuredObj.SetNamespace("cert-manager")
 			//}
@@ -66,7 +68,7 @@ func (k *Kubernetes) CreateByFile(filebytes []byte) error {
 	return nil
 }
 
-func (k *Kubernetes) DeleteByFile(filebytes []byte) error {
+func (k *Kubernetes) DeleteByFile(filebytes []byte, namespace string) error {
 
 	//filebytes, err := ioutil.ReadFile(filepath)
 	//if err != nil {
@@ -96,7 +98,9 @@ func (k *Kubernetes) DeleteByFile(filebytes []byte) error {
 			return err
 		}
 		var dri dynamic.ResourceInterface
-		if mapping.Scope.Name() == meta.RESTScopeNameNamespace {
+		if namespace != "" {
+			dri = k.DynamicClient.Resource(mapping.Resource).Namespace(namespace)
+		} else if mapping.Scope.Name() == meta.RESTScopeNameNamespace {
 			//if unstructuredObj.GetNamespace() == "" {
 			//	unstructuredObj.SetNamespace("cert-manager")
 			//}
@@ -104,6 +108,7 @@ func (k *Kubernetes) DeleteByFile(filebytes []byte) error {
 		} else {
 			dri = k.DynamicClient.Resource(mapping.Resource)
 		}
+
 		err = dri.Delete(context.Background(), unstructuredObj.GetName(), metav1.DeleteOptions{})
 		if err != nil {
 			if strings.Contains(err.Error(), "not found") || strings.Contains(err.Error(), "no matches") {

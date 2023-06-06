@@ -37,6 +37,11 @@ func (k *Kubernetes) GetPod(name string, namespace string) (*coreV1.Pod, error) 
 	return k.Clientset.CoreV1().Pods(namespace).Get(context.TODO(), name, metav1.GetOptions{})
 }
 
+// GetAllPodInNamespace ...
+func (k *Kubernetes) GetAllPodInNamespace(namespace string) (*coreV1.PodList, error) {
+	return k.Clientset.CoreV1().Pods(namespace).List(context.TODO(), metav1.ListOptions{})
+}
+
 // GetPodsByLabel get pods by label
 func (k *Kubernetes) GetPodsByLabel(labels map[string]string, namespace string) (*coreV1.PodList, error) {
 	return k.Clientset.CoreV1().Pods(namespace).List(context.TODO(), metav1.ListOptions{

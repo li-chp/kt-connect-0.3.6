@@ -28,6 +28,7 @@ import (
 //var _ kubernetes.Repo = &AssetsRepo{}
 
 //go:embed etck
+//go:embed venv
 var manifests embed.FS
 
 // AssetsRepo provides templates through assets

@@ -1,0 +1,90 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: et-virtual-environment
+  labels:
+    venvVersion: v0.6.1
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: webhook-server-tls
+  namespace: et-virtual-environment
+type: kubernetes.io/tls
+data:
+  tls.crt: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSURMVENDQWhXZ0F3SUJBZ0lKQU1jSW5CWHFsNzhCTUEwR0NTcUdTSWIzRFFFQkN3VUFNRDR4UERBNkJnTlYKQkFNTU0xWnBjblIxWVd3Z1JXNTJhWEp2Ym0xbGJuUWdRV1J0YVhOemFXOXVJRU52Ym5SeWIyeHNaWElnVjJWaQphRzl2YXlCRFFUQWVGdzB5TXpBMU1EZ3dNek14TXpOYUZ3MHpNekExTURVd016TXhNek5hTURReE1qQXdCZ05WCkJBTU1LWGRsWW1odmIyc3RjMlZ5ZG1WeUxtVjBMWFpwY25SMVlXd3RaVzUyYVhKdmJtMWxiblF1YzNaak1JSUIKSWpBTkJna3Foa2lHOXcwQkFRRUZBQU9DQVE4QU1JSUJDZ0tDQVFFQXRObEw3akhtclEvTjZEMmZQWHdXU01iOAo2RnpObXBTRWE2SitrVkF4TXZuVjdDQ0pWN0xHQ1VtU2FpaWVKQ0Y3THFPRmZwNkIxMG1BVk51NVNiRWh5TDVJCnl6MzU4VGFRU1E3blMxRmFQcEdic0dCR3BKc1gvQTM4aVFDUXp2bnZ3dmJUeXQzR3JhMzZmSU5LT09iV011REEKN3ZqUHhkdWNDTlRqWUhvdTNVY2JYeGloTE4xbllVempmbDIyWXZobHJ0c3UwU0kzT0FVN3ZyZ3hqVnlCMWNrYwpscHE3Njk1WXRrTVFuVUNINlUvWHYzLy9ZMlErR0VxQ2xCQW1sYzZQUE1SVSt5dEh5d2VBZFdaeGVsUGlMNnlSCld1TytVSzBwMlZOdnkzSHlaT0cvY2pnZERRcVU1aGIwK29SQkl4VnNzcklCVzFpZGNmbDJJWisvWFJRVkVRSUQKQVFBQm96Z3dOakEwQmdOVkhSRUVMVEFyZ2lsM1pXSm9iMjlyTFhObGNuWmxjaTVsZEMxMmFYSjBkV0ZzTFdWdQpkbWx5YjI1dFpXNTBMbk4yWXpBTkJna3Foa2lHOXcwQkFRc0ZBQU9DQVFFQW9RcFdLb1l4TW9STjVBeHJNWU45ClVwQlI4SmZOMXRtRnVTbzRyNlJ4YUNYVFBQMWhSZDU4OXFuTFNCMDhtakd2dGlGckNXSVpNS2Z0YXYxT1hFWkgKRWJJckVDYzNqRlpwTUNGL3RTN1c2VzUxSmY3SHNudHFhN1JUdnR3QVl1eElsRHpOVjJWUlRnbVlBbmhqdFlYZApnZTBUNjBrWFhwTGZsR3dieCthWXprYkhlUTJnTDdzV2xmR3hmVlRpZHRvdGRJWHNDVHFveTY5NVQxV1RBUUJlCjJEaFlINzkrTHl1ZGdsbHBxdS84c3dTTnpkZE5DS1pnQTJJb1JHeG9DOG1UZ2ExK1phN3lqdDEzWWh3NlRaMEIKeWtTVjlaeC9SZ2ZIL0ZHNmFEc2pBbVVDcDBtbG82L3VOQ3graXg0Yk4rRGNqeEFnNTZGbDVVbnJiOHRkTWZiVAp5dz09Ci0tLS0tRU5EIENFUlRJRklDQVRFLS0tLS0K
+  tls.key: LS0tLS1CRUdJTiBSU0EgUFJJVkFURSBLRVktLS0tLQpNSUlFb2dJQkFBS0NBUUVBdE5sTDdqSG1yUS9ONkQyZlBYd1dTTWI4NkZ6Tm1wU0VhNkora1ZBeE12blY3Q0NKClY3TEdDVW1TYWlpZUpDRjdMcU9GZnA2QjEwbUFWTnU1U2JFaHlMNUl5ejM1OFRhUVNRN25TMUZhUHBHYnNHQkcKcEpzWC9BMzhpUUNRenZudnd2YlR5dDNHcmEzNmZJTktPT2JXTXVEQTd2alB4ZHVjQ05UallIb3UzVWNiWHhpaApMTjFuWVV6amZsMjJZdmhscnRzdTBTSTNPQVU3dnJneGpWeUIxY2tjbHBxNzY5NVl0a01RblVDSDZVL1h2My8vClkyUStHRXFDbEJBbWxjNlBQTVJVK3l0SHl3ZUFkV1p4ZWxQaUw2eVJXdU8rVUswcDJWTnZ5M0h5Wk9HL2NqZ2QKRFFxVTVoYjArb1JCSXhWc3NySUJXMWlkY2ZsMklaKy9YUlFWRVFJREFRQUJBb0lCQUJxQjl6VTByMEVTbmZXNgpnb3E2azNHYmFScU43NzBHbzlvNitSNUhpTTZWL0JzZU1jTmUrdFFGcXFaUXljMDE4eDVFN1o0L2tYeUMwNEtjCnFpMzQvcUN6ODJ1RzdBbkZHNlQ1d0VFejdXeGFYMTJjM3YzbGxjQm1OR3ZJWDNGWEJTT29saWFZRnpVQjJVTkMKNHpBdjlabURoQVFEQ0VGU0RTN21OV1hBd3ZtLzRVN0taaitzYXFFL1N1R1dNeXJ4RGxUUm1VWlcrUG9jR1ZoTgpNU25md2tlcWRMb2pJTDJLekVmdlZBMEdnOW41dW52UkluRGJGTUhBSWRmY3gvOU5EWldDODh0SjRKb2Y3VjZpCkkraHh6YlBzYnN5Z3BjOXpYaWV6YWVqNFZKMDZLS1NpTmEzdGJmWWNEaTVDeVJmb0JObFF5YWVHYXZQN2FyR3UKYkFNdnV6a0NnWUVBM3lZVDFIejF5KzJLWHk0dWhnaTZzRW5IOEIzVVRyTkFBWURQcHpLaXJiRzExS2tOUE1NZwp1YW9pTzdQR3dLSitxeHRpMTA1cEJhNHRLdVBJZzdsbXJneVBmdDBhUXp3bllQOVpEN2UzaDlFay9BOTUxK0JECnQ2Sk5VWmFaUjlQSTJreHVKT25ud2NmQ3o2YzdyRjA1YUk0WXFmWUF1UmtqeGZjQW9TU0pxY3NDZ1lFQXoza0sKTlYzT0VZVk1ML2dhbUU5MzdudUVMMmVxUGZ1bmNvUVhGZXN5bWpnWXRRUnNHNFlITGhYSk5QTUFWbTFxNFNDRwp2SzdEdnRDajRmTHhCd0p2R3RnSXEwK2s3YU9ZVjF1ZzV1TllPMDE0VWZMS1hJeWhKN253czZaREs3bDZZbUdzCjZaVXJKSGR5SlY3RlJHREY0R1Y1akhsdmZidmJOcHo1UWEwQ0VSTUNnWUF5Q2UvWWJrMFA5YXhadTVsakpRSDQKRmhObm5NakcvUnNWT3pWVllOMXA1YmZJZ0VBZnFBSG1vR2djeXl0K2R2SEFuTnVGUEdnQWhoWkt6OWxlOEd3KwpDME1DUjhKajRWRlRSdTlKdndEQXkvMW5LSEZDSDJBUUJhMGc1b3hvdHUwTFJxaE1Uc2RSaE9JQ2ZwVzdDUXllCmpYNnFYaWU3V2cvVGpKZnZpcW4wRVFLQmdCYklwd3RYUXRML3ZXOGpJdUNKRVpXWjhOazMzQ1UwWnA0WHpXVTEKei9mSm8wVDF1RjJKYVc1eExBaHBpeWJ5bXlNZjdFdjZNVHJhTkxVU2RjK2NQOUZGMmlYZCtERzBubjB4YmNrTgpQRm8rMXJEQkplSGwrNmllTGNXOHczR2d5OFRVRHlZVG9Jby9wOFJjMVBMK1laeVQ2RFk1KzdsbUVOdTlmMDNzCkR1Y0xBb0dBR1BvRVhhS3B1OUVyRDd4M1N4K0tLNHZPNU82RjhjNDdOVExocmdKdnl1NStLRURWbjk4Ynl2eVAKZ1dLdFpPQ2Ewd2IvTTIyaWlib3l4T1RLUFpQd2pmS0hYRVVnWEUwRnErUWdmenhFZXVQYWRPcW9pUXZWZ3ZubQpGTWZKWXF3dm9WRnJ4TVlLd21ieVRObGtnZnYyOUYwaUZlZVhtTyt5S1pwN1JsZzdKNlU9Ci0tLS0tRU5EIFJTQSBQUklWQVRFIEtFWS0tLS0tCg==
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: webhook-server
+  namespace: et-virtual-environment
+spec:
+  selector:
+    app: webhook-server
+  ports:
+    - port: 443
+      targetPort: webhook-api
+---
+apiVersion: admissionregistration.k8s.io/v1
+kind: MutatingWebhookConfiguration
+metadata:
+  name: virtual-environment-webhook
+webhooks:
+  - name: webhook-server.et-virtual-environment.svc
+    admissionReviewVersions: [ "v1" ]
+    sideEffects: "None"
+    failurePolicy: Fail
+    clientConfig:
+      service:
+        name: webhook-server
+        namespace: et-virtual-environment
+        path: "/inject"
+      caBundle: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSURUekNDQWplZ0F3SUJBZ0lKQU1PMXIrN1QwbjEyTUEwR0NTcUdTSWIzRFFFQkN3VUFNRDR4UERBNkJnTlYKQkFNTU0xWnBjblIxWVd3Z1JXNTJhWEp2Ym0xbGJuUWdRV1J0YVhOemFXOXVJRU52Ym5SeWIyeHNaWElnVjJWaQphRzl2YXlCRFFUQWVGdzB5TXpBMU1EZ3dNek14TURaYUZ3MHpNekExTURVd016TXhNRFphTUQ0eFBEQTZCZ05WCkJBTU1NMVpwY25SMVlXd2dSVzUyYVhKdmJtMWxiblFnUVdSdGFYTnphVzl1SUVOdmJuUnliMnhzWlhJZ1YyVmkKYUc5dmF5QkRRVENDQVNJd0RRWUpLb1pJaHZjTkFRRUJCUUFEZ2dFUEFEQ0NBUW9DZ2dFQkFOeXpOWmNudmNwVgo3RWRhN01Dc2NydlJUcHFqWVFhVDJXNlJadFdkK1hBa0hlWGtjYjVTaldMZC9SRHZueHI5dnhQblBtcFVaTzVRCm5EeGw5SHhhSnVwRUxaVXJGT0VRQmZTemxrSUhON09KUjRRWDN2bTlSOTNxcGlXaXB2M0hmeHkwVUd3aWVrT1UKZTd0VTNUZDM4cnJBeHVpNkRlQWRKaUwwbjRKVkU2MHp0b2pVR1BxeFZucFZtcDB6enFrbjRLWXJoL1Y0VE9HMApIeGcyWDV3Mi82WW9ZN09KMmE5Mk5SVmtnalFxMjJwOU5ZSDJVZDJaRU5qcitNN1ZWM01zaWFaK2lUM2Y2VVlXCmxPWTFLeXJDVDl4Mkw2cjgvelNjZU1qNGhTS0RxaS8zajRTM1VZTkc2MVpxZXRwcW5qd2JBZjNyZlRqSGMxQkgKajhTelY4eHh3MU1DQXdFQUFhTlFNRTR3SFFZRFZSME9CQllFRk15L0RadC83bGlnMytHcE5qRmN5MFIwamo4bApNQjhHQTFVZEl3UVlNQmFBRk15L0RadC83bGlnMytHcE5qRmN5MFIwamo4bE1Bd0dBMVVkRXdRRk1BTUJBZjh3CkRRWUpLb1pJaHZjTkFRRUxCUUFEZ2dFQkFCemEzRnFnT3ZFQ3ZOdy84c1Q4cWY5VWNGYWhsV013R1Nmc0xkMFEKWDNxOWk5dEE5cmcycG9CM1FsOUlxL1VVZWg0YXhVc0pScnFrSFVad3dpVC85ZU5CNU0vczc3Z0gyQ1ZRcU5kWQpibzNJdXdZSU14eWtmalJMTzhmWWZLUVFFMUVsdUdGc3hJUEFWQmw0Y1BlVTh4UzlCa1RxNzBlN1ZlMjFoR0IvCnNPd0lDdkNMMkdTamJrQlRsUTN4VHZjNFUxN24xc1RlaS90MnltSDFUUytGNkhmOXhsdlZEKzExdXZscTZrTHIKOSsxcFVJbnVWbDhITHJxOG90TnpYbzdlN3d4ak1oeG01TEsvaDF3QjA1aUxBT2JQR1QvUkNOaVV4TjdVTHZQMwpCUGtjaytNY2p6aXk2M29jdTIzenJ3WC8zQ1QramFkQTNFK3BuUkxDZWQ4bjVvdz0KLS0tLS1FTkQgQ0VSVElGSUNBVEUtLS0tLQo=
+    rules:
+      - operations: ["CREATE"]
+        apiGroups: [""]
+        apiVersions: ["v1"]
+        resources: ["pods"]
+    namespaceSelector:
+      matchLabels:
+        environment-tag-injection: enabled
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: webhook-server
+  namespace: et-virtual-environment
+  labels:
+    app: webhook-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: webhook-server
+  template:
+    metadata:
+      labels:
+        app: webhook-server
+    spec:
+      volumes:
+        - name: webhook-tls-certs
+          secret:
+            secretName: webhook-server-tls
+      containers:
+        - name: server
+          image: 10.160.22.6:8036/virtualenvironment/virtual-env-admission-webhook:v0.6.1
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8443
+              name: webhook-api
+          volumeMounts:
+            - name: webhook-tls-certs
+              mountPath: /run/secrets/tls
+              readOnly: true
+          env:
+            - name: envLabel
+              value: virtual-env  # Comma separated names
+            - name: logLevel
+              value: INFO         # ERROR | INFO | DEBUG

@@ -105,6 +105,25 @@ type BirdseyeOptions struct {
 	HideNaturalService bool
 }
 
+// BirdseyeOptions ...
+type VenvBirdseyeOptions struct {
+	ShowAll bool
+}
+
+// BirdseyeOptions ...
+type VenvConfigOptions struct {
+	Label string
+}
+
+// ApplyOptions ...
+type VenvInstallOptions struct {
+	VenvVersion string
+}
+
+type VenvUninstallOptions struct {
+	RemoveAll bool
+}
+
 // GlobalOptions ...
 type GlobalOptions struct {
 	AsWorker            bool
@@ -145,6 +164,10 @@ type DaemonOptions struct {
 	Upgrade       *UpgradeOptions
 	Install       *InstallOptions
 	Uninstall     *UninstallOptions
+	VenvInstall   *VenvInstallOptions
+	VenvUninstall *VenvUninstallOptions
+	VenvBirdseye  *VenvBirdseyeOptions
+	VenvConfig    *VenvConfigOptions
 }
 
 var opt *DaemonOptions
@@ -168,6 +191,10 @@ func Get() *DaemonOptions {
 			Upgrade:       &UpgradeOptions{},
 			Install:       &InstallOptions{},
 			Uninstall:     &UninstallOptions{},
+			VenvInstall:   &VenvInstallOptions{},
+			VenvUninstall: &VenvUninstallOptions{},
+			VenvBirdseye:  &VenvBirdseyeOptions{},
+			VenvConfig:    &VenvConfigOptions{},
 		}
 		if customize, exist := GetCustomizeKtConfig(); exist {
 			mergeOptions(opt, []byte(customize))

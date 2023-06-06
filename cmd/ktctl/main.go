@@ -14,7 +14,7 @@ import (
 )
 
 var (
-	version = "1.0.0-beta4"
+	version = "1.0.0-beta5"
 )
 
 func init() {
@@ -61,6 +61,12 @@ func main() {
 	rootCmd.AddCommand(command.NewUpgradeCommand())
 	rootCmd.AddCommand(command.NewInstallCommand())
 	rootCmd.AddCommand(command.NewUninstallCommand())
+	rootCmd.AddCommand(command.NewVenvInstallCommand())
+	rootCmd.AddCommand(command.NewVenvUninstallCommand())
+	rootCmd.AddCommand(command.NewVenvUpgradeCommand())
+	rootCmd.AddCommand(command.NewVenvConfigCommand())
+	rootCmd.AddCommand(command.NewVenvCleanCommand())
+	rootCmd.AddCommand(command.NewVenvBirdseyeCommand())
 	rootCmd.SetHelpCommand(&cobra.Command{Hidden: true})
 	rootCmd.SetUsageTemplate(general.UsageTemplate(false))
 	rootCmd.SilenceUsage = true

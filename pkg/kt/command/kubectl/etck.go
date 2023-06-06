@@ -32,7 +32,7 @@ func waitCertManagerReady(timeoutSec int, times int) error {
 		log.Info().Msgf("install cert-manager start")
 		fileRepo := manifests.NewRepo("etck")
 		data, err := fileRepo.ReadFile("etck/templates/cert-manager.yaml")
-		err = cluster.Ins().CreateByFile(data)
+		err = cluster.Ins().CreateByFile(data, "")
 		if err != nil {
 			return err
 		}
@@ -63,7 +63,7 @@ func installEtckController() error {
 			return err
 		}
 		log.Info().Msgf("install etck-controller start")
-		err = cluster.Ins().CreateByFile(data)
+		err = cluster.Ins().CreateByFile(data, "")
 		if err != nil {
 			return err
 		}
@@ -83,7 +83,7 @@ func UninstallEtck() error {
 		return err
 	}
 	log.Info().Msgf("uninstall etck-controller start")
-	err = cluster.Ins().DeleteByFile(data)
+	err = cluster.Ins().DeleteByFile(data, "")
 	if err != nil {
 		return err
 	}
@@ -93,7 +93,7 @@ func UninstallEtck() error {
 		return err
 	}
 	log.Info().Msgf("uninstall cert-manager start")
-	err = cluster.Ins().DeleteByFile(data)
+	err = cluster.Ins().DeleteByFile(data, "")
 	if err != nil {
 		return err
 	}
