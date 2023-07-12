@@ -25,7 +25,7 @@ func NewInstallCommand() *cobra.Command {
 		},
 		RunE: func(cmd *cobra.Command, args []string) error {
 			opt.HideGlobalFlags(cmd)
-			return Install(args[0])
+			return Install()
 		},
 		Example: "et install [options]",
 	}
@@ -36,7 +36,7 @@ func NewInstallCommand() *cobra.Command {
 }
 
 // Connect setup vpn to kubernetes cluster
-func Install(plugin string) error {
+func Install() error {
 	err := kubectl.InstallEtck()
 	if err != nil {
 		return err

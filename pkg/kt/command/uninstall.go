@@ -25,7 +25,7 @@ func NewUninstallCommand() *cobra.Command {
 		},
 		RunE: func(cmd *cobra.Command, args []string) error {
 			opt.HideGlobalFlags(cmd)
-			return Uninstall(args[0])
+			return Uninstall()
 		},
 		Example: "et etck-uninstall [options]",
 	}
@@ -36,7 +36,7 @@ func NewUninstallCommand() *cobra.Command {
 }
 
 // Connect setup vpn to kubernetes cluster
-func Uninstall(plugin string) error {
+func Uninstall() error {
 	err := kubectl.UninstallEtck()
 	if err != nil {
 		return err
