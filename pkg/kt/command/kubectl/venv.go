@@ -89,6 +89,7 @@ func InstallVenvOperator() error {
 
 	log.Info().Msgf("install venv resource start")
 	data, err = fileRepo.ReadFile("venv/templates/venv_virtualenv.yaml")
+	data = []byte(strings.Replace(string(data), "{{headerKey}}", opt.Get().VenvInstall.EnvHeader, -1))
 	if err != nil {
 		return err
 	}

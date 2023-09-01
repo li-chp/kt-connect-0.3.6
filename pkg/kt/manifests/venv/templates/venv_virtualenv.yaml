@@ -4,9 +4,9 @@ metadata:
   name: default-virtualenv
 spec:
   envHeader:
-    name: cmss-env-mark
+    name: {{headerKey}}
     autoInject: true
   envLabel:
     name: virtual-env
     splitter: "."
-    defaultSubset: dev
+    defaultSubset: test

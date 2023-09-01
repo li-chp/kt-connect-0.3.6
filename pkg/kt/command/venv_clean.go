@@ -23,7 +23,7 @@ func NewVenvCleanCommand() *cobra.Command {
 		RunE: func(cmd *cobra.Command, args []string) error {
 			return VenvClean(args)
 		},
-		Example: "et venv-config [pod..]",
+		Example: "et venv-config <pod> [command options]",
 	}
 
 	cmd.SetUsageTemplate(general.UsageTemplate(false))

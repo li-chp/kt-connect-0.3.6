@@ -5,6 +5,7 @@ import (
 	"github.com/alibaba/kt-connect/pkg/kt/command/general"
 	"github.com/alibaba/kt-connect/pkg/kt/command/kubectl"
 	opt "github.com/alibaba/kt-connect/pkg/kt/command/options"
+	"github.com/alibaba/kt-connect/pkg/kt/util"
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
 )
@@ -38,7 +39,8 @@ func NewVenvInstallCommand() *cobra.Command {
 
 // Connect setup vpn to kubernetes cluster
 func InstallVenv() error {
-	if opt.Get().VenvInstall.VenvVersion != "v0.6.0" && opt.Get().VenvInstall.VenvVersion != "v0.6.1" {
+	versions := []string{"v0.6.0", "v0.6.1"}
+	if util.Contains(versions, opt.Get().VenvInstall.VenvVersion) {
 		return fmt.Errorf("Wrong venv version you prompt!")
 	}
 	err := kubectl.InstallVenv()

@@ -10,10 +10,10 @@ import (
 )
 
 // NewBirdseyeCommand show a summary of cluster service network
-func NewVenvConfigCommand() *cobra.Command {
+func NewVenvEditCommand() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "venv-config",
-		Short: "Config one or more pod venv label in cluster",
+		Use:   "venv-edit",
+		Short: "Edit deployments templates label virtual-env in cluster",
 		PreRunE: func(cmd *cobra.Command, args []string) error {
 			if len(args) == 0 {
 				return fmt.Errorf("name of pod must be spcified")
@@ -21,33 +21,31 @@ func NewVenvConfigCommand() *cobra.Command {
 			return general.Prepare()
 		},
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return VenvConfig(args)
+			return VenvEdit(args[0])
 		},
-		Example: "et venv-config <pod> [command options]",
+		Example: "et venv-edit <deployments> [command options]",
 	}
 
 	cmd.SetUsageTemplate(general.UsageTemplate(false))
-	opt.SetOptions(cmd, cmd.Flags(), opt.Get().VenvConfig, opt.VenvConfigFlags())
+	opt.SetOptions(cmd, cmd.Flags(), opt.Get().VenvEdit, opt.VenvEditFlags())
 	return cmd
 }
 
-func VenvConfig(pods []string) error {
-	if "" == opt.Get().VenvConfig.Label {
+func VenvEdit(deploy string) error {
+	if "" == opt.Get().VenvEdit.Label {
 		return fmt.Errorf("The parameter label must be spcified!")
 	}
 
-	for _, name := range pods {
-		pod, err := cluster.Ins().GetPod(name, opt.Get().Global.Namespace)
-		if err != nil {
-			return err
-		}
-		pod.Labels["virtual-env"] = opt.Get().VenvConfig.Label
-		log.Info().Msgf("Start to update pod %s", name)
-		cluster.Ins().UpdatePod(pod)
+	apps, err := cluster.Ins().GetDeployment(deploy, opt.Get().Global.Namespace)
+	if err != nil {
+		return err
 	}
+	apps.Spec.Template.Labels["virtual-env"] = opt.Get().VenvEdit.Label
+	cluster.Ins().UpdateDeployment(apps)
+	log.Info().Msgf("Start to update deployments %s", deploy)
 
 	log.Info().Msg("---------------------------------------------------------------")
-	log.Info().Msgf("All looks good, Config pod virtual env label success!")
+	log.Info().Msgf("All looks good, Edit deployment template virtual env label success!")
 	log.Info().Msg("---------------------------------------------------------------")
 	return nil
 }
